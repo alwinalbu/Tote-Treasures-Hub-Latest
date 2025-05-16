@@ -1,0 +1,99 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.navbar {
+    background-color: #333;
+    padding:0;
+    border-bottom: 1px solid #e6ae31;
+}
+
+.navbar-brand h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.nav-link {
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Change the color of the navigation links on hover */
+.navbar-nav .nav-item a:hover {
+    color: #e6ae31;
+}
+
+/* Custom CSS to change the background color of the dropdown menu */
+.dropdown-menu {
+    background-color: #fff;
+}
+
+/* Custom CSS to change the text color of links in the dropdown menu */
+.dropdown-menu a {
+    color: #e6ae31;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+/* Center the content vertically and horizontally */
+.container-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Center the form vertically */
+    background-color: #0a0a0a; /* Add your preferred background color */
+}
+
+/* Style the login form container */
+.login-form {
+    background-color: #0a0a0a;
+    box-shadow: 0px 0px 10px rgba(230, 174, 49);
+    border-radius: 5px;
+    padding: 20px;
+    width: 90%; 
+    max-width: 400px; 
+    text-align: center;
+    height: auto; 
+    margin: 20px; 
+}
+
+/* .card {
+    width: 30rem;
+}
+
+.card-title, .card-subtitle {
+    color: white;
+    text-align: center;
+} */
+
+.verify input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #FA8232;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+#emailVerification {
+    background-color: #fa8232;
+    color: white;
+    border: none;
+    width: -webkit-fill-available;
+}
+
+.text-danger {
+    color: #fa8232;
+}
+
+#resendOtp {
+    display: none;
+}
+

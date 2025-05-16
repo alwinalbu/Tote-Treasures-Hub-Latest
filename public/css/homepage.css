@@ -1,0 +1,56 @@
+/* Reset some default styles for better consistency */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.navbar {
+    background-color: black;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(230, 174, 49);
+}
+
+.navbar-brand h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+.nav-link {
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Change the color of the navigation links on hover */
+.navbar-nav .nav-item a:hover {
+    color: rgba(230, 174, 49);
+}
+
+/* Custom CSS to change the background color of the dropdown menu */
+.dropdown-menu {
+    background-color: white; /* Replace with your desired background color */
+}
+
+/* Custom CSS to change the text color of links in the dropdown menu */
+.dropdown-menu a {
+    color: rgba(230, 174, 49); /* Replace with your desired text color */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+/* Responsive Font Sizes */
+@media (max-width: 768px) {
+    .navbar-brand h3 {
+        font-size: 16px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .dropdown-menu a {
+        font-size: 14px;
+    }
+}
