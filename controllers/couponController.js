@@ -9,11 +9,21 @@ module.exports = {
   // -----------------------------------------------Get Coupon------------------------------------------------------
   getCoupon: async (req, res) => {
     try {
-      const coupons = await Coupon.find().populate({
+      const today = new Date();
+
+      let coupons = await Coupon.find().populate({
         path: 'usedBy.userId',
         model: 'User',
       });
-  
+
+      // Update expired coupons in DB
+      for (let coupon of coupons) {
+        if (coupon.expiration_date < today && coupon.Status !== "Expired") {
+          coupon.Status = "Expired";
+          await coupon.save();
+        }
+      }
+
       res.render('admin/couponpage', { coupons });
     } catch (error) {
       console.error('Error fetching coupons:', error);
@@ -107,53 +117,95 @@ module.exports = {
 
 
   // -------------------------------------------Coupen Check in User Side------------------------------------------
-
   checkCoupon: async (req, res) => {
     try {
-        console.log("inside try of check coupen ");
-        const userId = req.session.user.user;
-        const code = req.body.code;
-        const total = req.body.total;
-        let discount = 0;
+      console.log("inside checkCoupon");
 
-        const couponMatch = await Coupon.findOne({ code, Status: "Active" });
+      const userId = req.session.user.id; 
+      const { code, total } = req.body;
+      const today = new Date();
 
-        if (couponMatch) {
-            
-            const isCouponUsed = couponMatch.usedBy.some(used => used.userId.toString() === userId);
+      // 1. Find valid coupon
+      const couponMatch = await Coupon.findOne({
+        code,
+        Status: "Active",
+        startDate: { $lte: today },
+        expiration_date: { $gte: today }
+      });
 
-            if (isCouponUsed) {
-                return res.json({ error: "You have already used this coupon." });
-            }
+      if (!couponMatch) {
+        return res.json({ error: "Coupon is invalid or expired." });
+      }
 
-            const hasAppliedCoupon = couponMatch.usedBy.some(used => used.userId.toString() === userId && used.status === 'used');
+      // 2. Check if user already used this coupon
+      const userCoupon = couponMatch.usedBy.find(
+        (used) => used.userId.toString() === userId
+      );
 
-            if (hasAppliedCoupon) {
-                return res.json({ error: "Another coupon is already applied. You can only use one coupon at a time." });
-            }
+      if (userCoupon && userCoupon.status === "used") {
+        return res.json({ error: "You have already used this coupon." });
+      }
 
-            if (total >= couponMatch.minimum_purchase) {
-                discount = couponMatch.discount_amount;
-
-                req.session.temporaryCouponInfo = {
-                    userId,
-                    couponCode: couponMatch._id,
-                    discount
-                };
-                await Cart.findOneAndUpdate({UserId:userId},{$set:{coupon:couponMatch._id}})
-
-                res.json({ success: true, discount });
-            } else {
-                res.json({ error: `Cart should contain a minimum amount of ${couponMatch.minimum_purchase}` });
-                discount=""
-            }
+      if (userCoupon && userCoupon.status === "pending") {
+        if (total >= couponMatch.minimum_purchase) {
+          return res.json({
+            success: true,
+            discount: couponMatch.discount_amount,
+            minAmount: couponMatch.minimum_purchase,
+            code: couponMatch.code
+          });
         } else {
-            res.json({ error: "No such active coupon found" });
+          return res.json({
+            error: `Cart should contain a minimum amount of ₹${couponMatch.minimum_purchase}`
+          });
         }
+      }
+
+      // 3. Check minimum purchase
+      if (total < couponMatch.minimum_purchase) {
+        return res.json({
+          error: `Cart should contain a minimum amount of ₹${couponMatch.minimum_purchase}`
+        });
+      }
+
+      // 4. Valid coupon → apply temporarily
+      const discount = couponMatch.discount_amount;
+
+      // Store coupon in session for checkout reference
+      req.session.temporaryCouponInfo = {
+        userId,
+        couponCode: couponMatch._id,
+        discount
+      };
+
+      // Save coupon reference in cart + mark "pending"
+      await Cart.findOneAndUpdate(
+        { UserId: userId },
+        { $set: { coupon: couponMatch._id } }
+      );
+
+      // Insert new or update existing record
+      await Coupon.updateOne(
+        { _id: couponMatch._id, "usedBy.userId": userId },
+        { $set: { "usedBy.$.status": "pending" } }
+      );
+
+      await Coupon.updateOne(
+        { _id: couponMatch._id, "usedBy.userId": { $ne: userId } },
+        { $push: { usedBy: { userId, status: "pending" } } }
+      );
+
+      return res.json({
+        success: true,
+        discount,
+        minAmount: couponMatch.minimum_purchase,
+        code: couponMatch.code
+      });
+
     } catch (error) {
-        console.log(error);
-        res.json({ error: "Some error occurred" });
+      console.error("Error in checkCoupon:", error);
+      res.json({ error: "Some error occurred while applying coupon" });
     }
-},
+  }
 
 }

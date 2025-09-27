@@ -1,5 +1,15 @@
 const { body, validationResult } = require('express-validator');
 
+
+// Current password must not be empty
+const currentPasswordValidation = [
+  body('currentPassword')
+    .notEmpty().withMessage('Current password is required'),
+];
+
+
+// New password rules
+
 const passwordValidation = [
   body('Password')
     .notEmpty().withMessage('Password is required')
@@ -7,6 +17,10 @@ const passwordValidation = [
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
     .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'),
 ];
+
+
+
+// Confirm password must match new password
 
 const confirmPasswordValidation = [
   body('confirmPassword')
@@ -19,18 +33,26 @@ const confirmPasswordValidation = [
     }),
 ];
 
+
+// Middleware to handle errors
+
 const passvalidate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+
     console.log(errors.array());
+
     const errorMessages = errors.array().map(error => error.msg);
-    req.flash('error', errorMessages);
-    return res.redirect('/createNewPassword');
+    return res.status(400).json({
+      success: false,
+      error: errorMessages.join(', '),
+    });
   }
   next();
 };
 
 module.exports = {
+  currentPasswordValidation,
   passwordValidation,
   confirmPasswordValidation,
   passvalidate,

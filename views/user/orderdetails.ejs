@@ -47,21 +47,18 @@
                      </li>
                     <li class="nav-item ml-auto"> <!-- Use ml-auto to push items to the right -->
                         <% if (user) { %>
-                            <div class="dropdown">
-                                <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <%= user.Username %> <i class="fa-solid fa-user"></i>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="usernameLink">
-                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider" />
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="/logout" id="logoutLink">Logout</a>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown">
+                                <%= user.username %> <i class="fa-solid fa-user"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li><a class="dropdown-item" href="/logout" id="logoutLink">Logout</a></li>
+                            </ul>
+                        </div>
                             <% } else { %>
                                 <div class="d-flex align-items-center"> <!-- Add a div wrapper -->
                                     <a class="nav-link" href="/signup">

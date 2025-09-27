@@ -269,7 +269,7 @@ getCount: async (req, res) => {
            const perPage = 5;
            const skip = (page - 1) * perPage;
            const adminName = req.session.admin.Name;
-           const users = await User.find({}).skip(skip).limit(perPage).sort({ Username: 1 });
+          const users = await User.find({}).skip(skip).limit(perPage).sort({ _id: -1 });
 
           const totalCount = await User.countDocuments();
 

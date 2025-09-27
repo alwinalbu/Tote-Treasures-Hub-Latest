@@ -5,16 +5,15 @@ const { Schema, ObjectId  } = mongoose;
 const UserSchema = new Schema({
     Username: {
         type: String,
-        required: true
+        required: false
     },
     Email: {
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
-    Password: {
-        type: String,
-        required: false
-    },
+    Password: { type: String, required: function () { return !this.googleId; } }
+,
     Status: {
         type: String,
         default: 'Active'
@@ -50,7 +49,9 @@ const UserSchema = new Schema({
         }
     }],
     googleId: {
-        type: String
+        type: String,
+        unique:true,
+        sparse:true
     },
     Wishlist:[{
         productId:{type:Schema.Types.ObjectId,ref:'Products'}

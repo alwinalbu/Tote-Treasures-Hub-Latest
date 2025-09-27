@@ -45,7 +45,6 @@ $(document).ready(function () {
       data: { otp:otp }, 
       success: function (response) {
 
-        console.log('Response from server:', response);
 
         if (response.success) {
           clearInterval(countdown);

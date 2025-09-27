@@ -54,18 +54,15 @@
                     <li class="nav-item ml-auto">
                         <% if (user) { %>
                         <div class="dropdown">
-                            <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <%= user.Username %> <i class="fa-solid fa-user"></i>
+                            <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown">
+                                <%= user.username %> <i class="fa-solid fa-user"></i>
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="usernameLink">
+                            <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="/profile">Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider" />
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="/logout" id="logoutLink">Logout</a>
-                                </li>
+                                <li><a class="dropdown-item" href="/logout" id="logoutLink">Logout</a></li>
                             </ul>
                         </div>
                         <% } else { %>
@@ -128,7 +125,7 @@
                 <td class="align-middle">₹<%= item.productId.DiscountAmount %></td>
                 <td class="align-right">
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="/addtocart/<%=item.productId._id %>" class="btn btn-light border text-success icon-hover-success add-to-cart-button" id="addToCartButton">Add To Cart</a>
+                        <a href="/addtocart/<%=item.productId._id %>?from=wishlist" class="btn btn-light border text-success icon-hover-success add-to-cart-button" id="addToCartButton">Add To Cart</a>
                         <a href="/removefromWishlist/<%= item.productId._id %>"
                             class="btn btn-light border text-danger icon-hover-danger remove-button">Remove</a>
                     </div>

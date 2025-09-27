@@ -1,239 +1,123 @@
-const express=require('express')
-const router=express.Router()
-const userController=require('../controllers/userController')
-const wishlisitController=require('../controllers/wishlistController')
-const couponController=require('../controllers/couponController')
-const categoryController=require('../controllers/categoryController')
-const productController=require('../controllers/productController')
-const Product=require('../models/productSchema')
-const userAuth=require('../middlewares/userAuth')
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+const wishlisitController = require('../controllers/wishlistController');
+const couponController = require('../controllers/couponController');
+const categoryController = require('../controllers/categoryController');
+const productController = require('../controllers/productController');
+const cartController = require("../controllers/cartController");
+const walletController = require('../controllers/walletController');
 const { userSignupValidation, validate } = require('../middlewares/signupvalidation');
-const {passwordValidation,confirmPasswordValidation,passvalidate,} = require('../middlewares/newpasswordvalidate');
-const cartController=require("../controllers/cartController")
-const Categories = require('../models/categorySchema')
-const passport = require('passport');
-const { sign } = require('crypto')
-const walletController=require('../controllers/walletController')
+const { passwordValidation, confirmPasswordValidation, passvalidate, currentPasswordValidation } = require('../middlewares/newpasswordvalidate');
 const calculateCartCount = require('../middlewares/cartCountMiddleware');
+const { userTokenAuth, userExist } = require('../middlewares/userAuth');
+const requireSession = require('../middlewares/requireSession'); // ✅ new middleware
+const passport = require('passport');
 
+// ----------------- Public Landing -----------------
+router.get('/', calculateCartCount, userController.initial);
 
+// ----------------- Auth -----------------
+router.get('/login', userExist, userController.login);
+router.post('/login', userController.userLogin);
 
-router.route('/')
-.get(calculateCartCount,userController.initial)
+// ✅ Start Google login
+router.get("/auth/google",passport.authenticate("google", { scope: ["profile", "email"] }));
 
-// ---------------------------------------google sign in----------------------------------------------------
+// ✅ Google callback
+router.get("/auth/google/callback",userController.googleSignInCallback);
 
-// Route to initiate Google Sign-In
-router.get('/auth/google', userController.googleSignIn);
-router.get('/auth/google/callback', userController.googleSignInCallback);
+router.get('/signup', userExist, userController.signup);
+router.post('/signup', userSignupValidation, validate, userController.postUserSignup);
 
-// ------------------------------------------------------------------------------------------------------------
-router.route('/homepage')
-.get(calculateCartCount,userController.home)
+router.get('/emailVerification', userExist, userController.getemailVerification);
+router.post('/emailVerification', userController.otpAuth, userController.postEmailVerification);
 
-router.route('/shop')
-.get(calculateCartCount,userController.shop)
+router.get('/resendOtp', userExist, userController.resendOtp);
 
-router.route('/category/:_id')
-.get(calculateCartCount,categoryController.getCategorybyId)
+router.get('/forgotpassword', userExist, userController.forgotpassword);
+router.post('/forgotpassword', userController.postforgotpassword);
 
-router.route('/login')
-.get(userAuth.userExist,userController.login)
-.post(userController.userLogin)
+router.get('/otpVerification', userExist, userController.getOtpVerification);
+router.post('/otpVerification', userController.passwordOtpAuth, userController.postOtpVerification);
 
-router.route('/forgotpassword')
-.get(userAuth.userExist,userController.forgotpassword)
-.post(userController.postforgotpassword)
+router.get('/passwordResendOtp', userExist, userController.PasswordResendOtp);
 
-router.route('/otpVerification')
-.get(userAuth.userExist,userController.getOtpVerification)
-.post(userController.passwordOtpAuth,userController.postOtpVerification)
+router.get('/createNewPassword', userExist, userController.getCreateNewPassword);
+router.post('/createNewPassword', userExist, passwordValidation, confirmPasswordValidation, passvalidate, userController.postCreateNewPassword);
 
-router.route('/passwordResendOtp')
-.get(userAuth.userExist,userController.PasswordResendOtp)
+router.get('/logout', userController.getUserLogout);
 
-router.route('/createNewPassword')
-.get(userAuth.userExist,userController.getCreateNewPassword)
-.post( userAuth.userExist,passwordValidation,confirmPasswordValidation,passvalidate,userController.postCreateNewPassword)
+// ----------------- Home / Shop / Categories -----------------
+router.get('/homepage', requireSession, calculateCartCount, userController.home);
+router.get('/shop', calculateCartCount, userController.shop);
+router.get('/category/:_id', calculateCartCount, categoryController.getCategorybyId);
 
+// ----------------- Search -----------------
+router.get('/search', requireSession, calculateCartCount, userController.searchByNames);
 
+// ----------------- Wallet -----------------
+router.get('/Wallet', requireSession, calculateCartCount, walletController.getWallet);
 
-router.route('/signup')
-  .get(userAuth.userExist, userController.signup)
-  .post(
-    (req, res, next) => {
-      console.log('Validation middleware triggered'); // Add a log to check if the validation middleware is being executed
-      next();
-    },
-    userSignupValidation,
-    validate,
-    (req, res, next) => {
-      console.log('Post signup handler triggered'); 
-      userController.postUserSignup(req, res, next);
-    }
-  );
+// ----------------- Filter -----------------
+router.get('/filter', requireSession, calculateCartCount, productController.filterProducts);
 
-router.route('/emailVerification')
-.get(userAuth.userExist,userController.getemailVerification)
-.post(userController.otpAuth,userController.postEmailVerification)
+// ----------------- Product -----------------
+router.get('/productViewDetailspage/:id', calculateCartCount, userController.getproductViewDetailspage);
 
-router.route('/resendOtp')
-.get(userAuth.userExist,userController.resendOtp)
-.post(userController.otpAuth)
+// ----------------- Wishlist -----------------
+router.get('/wishlist', requireSession, calculateCartCount, wishlisitController.getWishList);
 
-// --------------------------------------------Search----------------------------------------------------------------
+// API route (AJAX) → use JWT
+router.get('/addToWishlist/:_id', userTokenAuth, wishlisitController.addToWishList);
+router.get('/removefromWishlist/:_id', userTokenAuth, wishlisitController.removeItemFromWishlist);
 
-router.route('/search')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.searchByNames)
+// ----------------- Coupons -----------------
+router.post("/checkCoupon", userTokenAuth, couponController.checkCoupon);
 
 
-// -----------------------------------------------Wallet-------------------------------------------------------------
+// ----------------- About / Contact -----------------
+router.get("/aboutus", userController.GetAboutpage);
+router.get("/contactUs", userController.GetConatctpage);
 
-router.route('/Wallet')
-.get(userAuth.userTokenAuth,calculateCartCount,walletController.getWallet)
+// ----------------- Cart -----------------
+router.get('/cartpage', requireSession, calculateCartCount, userController.getCartpage);
+router.post('/cartpage', requireSession, userController.postCart);
 
+// API routes
+router.post('/add-to-cart/:productId', userTokenAuth, userController.addtocart);
+router.get('/getcartquantity', userTokenAuth, cartController.getQuantity);
+router.post('/updateQuantity', userTokenAuth, userController.updateQuantity);
+router.get('/removefromcart/:productId', userTokenAuth, userController.removeItemFromCart);
+router.get('/checkStock', userTokenAuth, cartController.checkStock);
+router.post("/removeCoupon", userController.removeCoupon);
 
-// -----------------------------------------Categories Select------------------------------------------------------
+// ----------------- Checkout -----------------
+router.get('/checkout', requireSession, calculateCartCount, userController.getCheckout);
+router.post('/checkout', requireSession, calculateCartCount, userController.postCheckout);
+router.post('/verify-payment', userTokenAuth, userController.verifyPayment);
+router.post('/addAddressCheckout', requireSession, calculateCartCount, userController.addAddressCheckout);
+router.get('/orderSuccess', requireSession, calculateCartCount, userController.getOrderSucces);
 
-router.route('/filter')
-.get(userAuth.userExist,calculateCartCount,productController.filterProducts)
 
+// ----------------- User Profile -----------------
+router.get('/profile', requireSession, calculateCartCount, userController.profile);
+router.post('/changepassword', requireSession,currentPasswordValidation,passwordValidation, confirmPasswordValidation, passvalidate, userController.changePassword);
 
+router.post('/addAddress', requireSession, calculateCartCount, userController.postAddressForm);
+router.get('/editAddress', requireSession, calculateCartCount, userController.getEditAddress);
+router.post('/editAddress/:_id', requireSession, calculateCartCount, userController.postEditAddress);
+router.get('/deleteAddress/:_id', requireSession, userController.deleteAddress);
 
-router.route('/productViewDetailspage/:id')
-.get(calculateCartCount,userController.getproductViewDetailspage)
-
-
-// ------------------------------------------------Wishlist--------------------------------------------------------
-
-router.route('/wishlist')
-.get(userAuth.userTokenAuth,calculateCartCount,wishlisitController.getWishList)
-
-router.route('/addToWishlist/:_id')
-.get(userAuth.userTokenAuth,calculateCartCount,wishlisitController.addToWishList)
-
-
-router.route('/removefromWishlist/:_id')
-.get(userAuth.userTokenAuth,calculateCartCount,wishlisitController.removeItemFromWishlist)
-
-
-// -----------------------------------coupon-----------------------------------------------------------------
-
-router.route("/checkCoupon")
-.post(userAuth.userTokenAuth,couponController.checkCoupon)
-
-
-// ------------------------------------------About US----------------------------------------------------------
-
-router.route("/aboutus")
-.get(userController.GetAboutpage)
-
-// ------------------------------------------Contact US----------------------------------------------------------
-
-router.route("/contactUs")
-.get(userController.GetConatctpage)
-
-// --------------------------------------Cart----------------------------------------------------------------
-
-
-router.route('/cartpage')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.getCartpage)
-.post(userAuth.userTokenAuth,calculateCartCount,userController.postCart)
-
-
-router.route('/add-to-cart/:productId')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.addtocart)
-
-
-router.route('/getcartquantity')
-.get(userAuth.userTokenAuth,calculateCartCount,cartController.getQuantity)
-
-
-router.route('/updateQuantity')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.updateQuantity)
-
-
-router.route('/removefromcart/:_id')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.removeItemFromCart)
-
-
-router.route('/checkStock')
-.get(userAuth.userTokenAuth,calculateCartCount,cartController.checkStock)
-
-
-// -------------------------------------------checkout page----------------------------------------------------
-
-router.route('/checkout')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.getCheckout)
-.post(userAuth.userTokenAuth,calculateCartCount,userController.postCheckout)
-
-
-router.route('/verify-payment')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.verifyPayment);
-
-
-router.route('/addAddressCheckout')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.addAddressCheckout)
-
-
-router.route('/orderSuccess')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.getOrderSucces)
-
-
-// -----------------------------------------------------User Profile-------------------------------------------
-
-router.route('/profile')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.profile)
-
-router.route('/changepassword')
-.post(userAuth.userTokenAuth,passwordValidation,confirmPasswordValidation,passvalidate,calculateCartCount,userController.changePassword)
-
-
-router.route('/addAddress')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.postAddressForm)
-
-
-router.route('/editAddress')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.getEditAddress)
-
-
-router.route('/editAddress/:_id')
-.post(userAuth.userTokenAuth,calculateCartCount,userController.postEditAddress)
-
-
-router.route('/deleteAddress/:_id')
-.get(userAuth.userTokenAuth,userController.deleteAddress)
-
-router.route('/orderlist')
-.get(userAuth.userTokenAuth,calculateCartCount,calculateCartCount,userController.getOrderlist)
-
-
-router.route('/order/details/:_id')
-.get(userAuth.userTokenAuth,calculateCartCount,userController.getOrderDetails)
-
-router.route('/order/cancelorder/:_id')
-.post(userAuth.userTokenAuth, userController.cancelOrder);
-
-router.route('/order/return/:_id')
-.post(userAuth.userTokenAuth, userController.returnOrder);
-
-router.route('/order/cancelRequest/:_id')
-.post(userAuth.userTokenAuth, userController.CancelreturnOrder);
-
-
-// ---------------------------------------download invoice of order for user ----------------------------------------------------------------
-
-router.route('/download-invoice')
-.post(userAuth.userTokenAuth,userController.downloadInvoice)
-
-
-router.route('/download-invoice/:_id')
-.get(userAuth.userTokenAuth,userController.downloadfile)
-
-
-// -----------------------------------------------logout-------------------------------------------------------------------------------------
-
-router.route('/logout')
-.get(userController.getUserLogout)
-
-module.exports=router;
+// ----------------- Orders -----------------
+router.get('/orderlist', requireSession, calculateCartCount, userController.getOrderlist);
+router.get('/order/details/:_id', requireSession, calculateCartCount, userController.getOrderDetails);
+router.post('/order/cancelorder/:_id', requireSession, userController.cancelOrder);
+router.post('/order/return/:_id', requireSession, userController.returnOrder);
+router.post('/order/cancelRequest/:_id', requireSession, userController.CancelreturnOrder);
+
+// ----------------- Invoices -----------------
+router.post('/download-invoice', requireSession, userController.downloadInvoice);
+router.get('/download-invoice/:_id', requireSession, userController.downloadfile);
+
+module.exports = router;

@@ -57,20 +57,18 @@
           <li class="nav-item me-5">
             <% if (user) { %>
               <div class="dropdown">
-                <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  <%= user.Username %> <i class="fa-solid fa-user"></i>
+                <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown">
+                  <%= user.username %> <i class="fa-solid fa-user"></i>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="usernameLink">
+                <ul class="dropdown-menu dropdown-menu-end">
                   <li><a class="dropdown-item" href="/profile">Profile</a></li>
                   <li>
                     <hr class="dropdown-divider" />
                   </li>
-                  <li>
-                    <a class="dropdown-item" href="/logout" id="logoutLink">Logout</a>
-                  </li>
+                  <li><a class="dropdown-item" href="/logout" id="logoutLink">Logout</a></li>
                 </ul>
               </div>
+
             <% } else { %>
               <div class="d-flex align-items-center">
                 <a class="nav-link" href="/signup">

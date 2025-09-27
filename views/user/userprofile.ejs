@@ -2,45 +2,64 @@
 <%- include('../partials/usernava') %>
 <%- include('../partials/usercanvas') %>
 
+
+
 <!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="changePasswordModalLabel">Change password</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div id="flashMessage" class="alert alert-danger" style="display: none;"></div>
-          <div class="modal-body">
-              <form id="passwordChangeForm">
-                  <div class="">
-                      <label for="currentPassword" style="color: black;">Current Password:</label>
-                      <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
-                  </div>
-                  <div class="">
-                      <label for="newPassword" style="color: black;">New Password:</label>
-                      <input type="password" class="form-control" id="password" name="Password" required>
-                  </div>
-                  <div class="">
-                      <label for="confirmPassword" style="color: black;">Confirm Password:</label>
-                      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                  </div>
-                  <br>
-                  <button type="submit" class="btn btn-primary">Save</button>
-                  <% if (messages.success) { %>
-                      <div class="alert alert-success">
-                          <%= messages.success %>
-                      </div>
-                  <% } else if (messages.error) { %>
-                      <div class="alert alert-danger">
-                          <%= messages.error %>
-                      </div>
-                  <% } %>
-              </form>
-          </div>
-      </div>
-  </div>
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+            <!-- Flash/Error Message -->
+            <div id="flashMessage" class="alert alert-danger" style="display: none;"></div>
+
+            <div class="modal-body">
+                <form id="passwordChangeForm" method="POST" action="/createNewPassword">
+                    <!-- Current Password -->
+                    <div>
+                        <label for="currentPassword" class="form-label text-white">Current Password:</label>
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                            autocomplete="current-password" required>
+                    </div>
+
+                    <!-- New Password -->
+                    <div>
+                        <label for="Password" class="form-label text-white">New Password:</label>
+                        <input type="password" class="form-control" id="Password" name="Password"
+                            autocomplete="new-password" required>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label for="confirmPassword" class="form-label text-white">Confirm Password:</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                            autocomplete="new-password" required>
+                    </div>
+
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save</button>
+
+                    <% if (messages.success) { %>
+                        <div class="alert alert-success mt-2">
+                            <%= messages.success %>
+                        </div>
+                        <% } else if (messages.error) { %>
+                            <div class="alert alert-danger mt-2">
+                                <%= messages.error %>
+                            </div>
+                            <% } %>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <!-- User Profile -->
 <div class="container text-center mt-3">
@@ -48,7 +67,7 @@
   <div class="row mt-3">
       <div class="col-lg-10 mx-auto">
           <div class="">
-              <label for="name">Name:</label>
+              <label for="name" class="text-white">Name:</label>
               <input type="text" id="name" class="form-control" value="<%= user.Username %>" readonly>
           </div>
           <div class="">
@@ -74,7 +93,7 @@
           <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
       </div>
 
-      <% if (user.ReferrerID) { %>
+      <% if (user.ReferrerID && user.ReferrerID.Username) { %>
           <p><strong>Referred By:</strong> <%= user.ReferrerID.Username %></p>
       <% } else { %>
           <p>You haven't been referred by anyone yet.</p>
@@ -92,6 +111,19 @@
       <% } %>
   </div>
 </div>
+
+<script>
+    document.getElementById("passwordChangeForm").addEventListener("submit", function (e) {
+        const newPassword = document.getElementById("Password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (newPassword !== confirmPassword) {
+            e.preventDefault();
+            document.getElementById("flashMessage").style.display = "block";
+            document.getElementById("flashMessage").innerText = "Passwords do not match!";
+        }
+    });
+</script>
 
 <script>
   function copyToClipboard() {

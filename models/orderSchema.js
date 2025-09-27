@@ -56,7 +56,7 @@ const ordersSchema = new Schema({
     Quantity: { type: Number },
   }],
   PaymentMethod: { type: String },
-  OrderDate: { type: Date },
+  OrderDate: { type: Date, default: Date.now },
   TotalPrice: { type: Number },
   PaymentStatus: { type: String, default: "Pending" },
   Address: { type: shippedAddressSchema },

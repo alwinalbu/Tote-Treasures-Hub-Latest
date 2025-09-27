@@ -4,7 +4,7 @@ const { ObjectId } = require('mongoose').Types;
 module.exports = {
     getWishList: async (req, res) => {
         try {
-            const userId = req.session.user.user;
+            const userId = req.session.user?.id;
 
             const user = await User.findOne({ _id: userId }).populate('Wishlist.productId');
             
@@ -18,7 +18,7 @@ module.exports = {
     addToWishList: async (req, res) => {
         try {
             const productId = req.params._id;
-            const userId = req.session.user.user;
+            const userId = req.session.user?.id;
     
             const user = await User.findById(userId);
     
@@ -37,7 +37,7 @@ module.exports = {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: userId },
                     { $push: { Wishlist: { productId: productId } } },
-                    { new: true } // Return the modified document rather than the original
+                    { new: true }
                 );
     
                 if (updatedUser) {
@@ -62,7 +62,7 @@ module.exports = {
 
     removeItemFromWishlist: async (req, res) => {
         try {
-            const userId = req.session.user.user;
+            const userId = req.session.user?.id;
             const productId = req.params._id;
     
             const updatedUser = await User.findByIdAndUpdate(
@@ -72,7 +72,7 @@ module.exports = {
             );
     
             console.log("User after wishlist deletion:", updatedUser);
-    
+        
             res.redirect("/wishlist");
         } catch (error) {
             console.error("Error removing item from wishlist:", error);

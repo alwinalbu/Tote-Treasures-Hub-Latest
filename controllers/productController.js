@@ -76,35 +76,49 @@ module.exports = {
         }
     },
     
-    
-      getProduct: async (req, res) => {
-        try {
-          const page = parseInt(req.query.page) || 1; 
-           const perPage = 5;
-           const skip = (page - 1) * perPage;
+//-----------------------Getting product for admin by search and normal-----------------------
 
-          const products = await Product.find().skip(skip).limit(perPage)
-            .populate('BrandName', 'Name') 
-            .populate('Category', 'Name')   
-            .lean()
-            .populate('offer');
-            
-          const totalCount = await Product.countDocuments();
+  getProduct: async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const perPage = 5;
+      const skip = (page - 1) * perPage;
+      const search = req.query.search ? req.query.search.trim() : "";
 
-          // console.log("Products:", products); 
+      let query = {};
+      if (search) {
+        query = {
+          $or: [
+            { ProductName: { $regex: search, $options: "i" } },
+            { "BrandName.Name": { $regex: search, $options: "i" } },
+            { "Category.Name": { $regex: search, $options: "i" } }
+          ]
+        };
+      }
 
-          res.render("admin/productpage", {
-            products,
-            currentPage: page,
-            perPage,
-            totalCount,
-            totalPages: Math.ceil(totalCount / perPage),
-          });
-        } catch (error) {
-          console.error(error);
-          res.status(500).send("Internal Server Error");
-        }
-      },
+      const products = await Product.find(query)
+        .skip(skip)
+        .limit(perPage)
+        .populate("BrandName", "Name")
+        .populate("Category", "Name")
+        .populate("offer")
+        .lean();
+
+      const totalCount = await Product.countDocuments(query);
+
+      res.render("admin/productpage", {
+        products,
+        currentPage: page,
+        perPage,
+        totalCount,
+        totalPages: Math.ceil(totalCount / perPage),
+        search // pass to EJS to keep value in input
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  },
 
       blockProduct: async (req,res)=>{
        try {

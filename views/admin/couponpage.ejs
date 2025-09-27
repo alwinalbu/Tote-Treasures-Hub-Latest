@@ -67,7 +67,7 @@
                     <i class="fas fa-user-plus me-2"></i>
                     <span>Brands</span>
                 </a>
-                <a href="/admin/Categorypage" class="list-group-item custom-list-item">
+                <a href="/admin/categorypage" class="list-group-item custom-list-item">
                     <i class="fas fa-list me-2"></i>
                     <span>Categories</span>
                 </a>
@@ -202,15 +202,13 @@
                       <p class="card-text">Start Date: <%= coupon.startDate.toISOString().split('T')[0] %></p>
                       <p class="card-text">Expiration Date: <%= coupon.expiration_date.toISOString().split('T')[0] %></p>
                       <p class="card-text">
-                        <% if (coupon.Status === 'Active') { %>
-                            <span class="text-success fw-bold">
-                                <%= coupon.Status %>
-                            </span>
-                        <% } else if (coupon.Status === 'Inactive') { %>
-                            <span class="text-danger fw-bold">
-                                <%= coupon.Status %>
-                            </span>
-                        <% } %>
+                        <% if (coupon.Status==='Active' ) { %>
+                            <span class="text-success fw-bold">Active</span>
+                            <% } else if (coupon.Status==='Inactive' ) { %>
+                                <span class="text-danger fw-bold">Inactive</span>
+                                <% } else if (coupon.Status==='Expired' ) { %>
+                                    <span class="text-warning fw-bold">Expired</span>
+                                    <% } %>
                     </p>
                     
                      
