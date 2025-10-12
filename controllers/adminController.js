@@ -274,7 +274,7 @@ getCount: async (req, res) => {
           const totalCount = await User.countDocuments();
 
           // console.log("users are :",users)
-          res.render("admin/manageusers", {
+          res.render("admin/manageUsers", {
             users,
             adminName,
             currentPage: page,

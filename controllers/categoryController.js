@@ -71,7 +71,7 @@ module.exports = {
       getEditCategory: async(req,res)=>{
         const _id=req.params._id;
         const category=await Category.findById(_id);
-        res.render("admin/editcategory", { category })
+        res.render("admin/editCategory", { category })
       },
 
       postEditCategory: async(req,res)=>{
