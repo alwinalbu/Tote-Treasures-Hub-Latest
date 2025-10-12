@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Italianno' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="/css/admin/orderlist.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <style>
+        /* Sticky footer fix */
+        html,
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .container {
+            min-height: 60vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasMenu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="">
+                <img src="/images/logo.png" style="max-height: 70px" alt="auto">
+                <h3 class="text-white fw-bold m-0 d-inline align-middle">ToteTreasures Hub</h3>
+            </a>
+
+            <!-- Search -->
+            <form class="d-flex" role="search" action="/search" method="GET">
+                <input class="form-control me-2" type="search" name="searchNames" placeholder="Search"
+                    aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/homepage">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/wishlist">WishList <i
+                                class="fa-solid fa-heart text-danger"></i></a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cartpage">Cart <i class="fa-solid fa-cart-shopping text-primary"></i>
+                            <% if (cartCount> 0) { %>
+                                <span id="cart-quantity" class="badge bg-danger">
+                                    <%= cartCount %>
+                                </span>
+                                <% } %>
+                        </a>
+                    </li>
+                    <li class="nav-item ml-auto">
+                        <% if (user) { %>
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                                    <%= user.username %> <i class="fa-solid fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                </ul>
+                            </div>
+                            <% } else { %>
+                                <div class="d-flex align-items-center">
+                                    <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+                                    <span class="nav-link">|</span>
+                                    <a class="nav-link" href="/login"><i class="fa-solid fa-sign-in-alt"></i> Login</a>
+                                </div>
+                                <% } %>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Offcanvas -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">User Panel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="list-group custom-list">
+                <a href="/profile" class="list-group-item custom-list-item"><i class="fas fa-house me-2"></i>
+                    Profile</a>
+                <a href="/orderlist" class="list-group-item custom-list-item"><i class="fas fa-bag-shopping me-2"></i>
+                    Orders History</a>
+                <a href="/cartpage" class="list-group-item custom-list-item"><i class="fas fa-cart-shopping me-2"></i>
+                    Cart</a>
+                <a href="/editAddress" class="list-group-item custom-list-item"><i class="fas fa-users me-2"></i>
+                    Address</a>
+                <a href="/Wishlist" class="list-group-item custom-list-item"><i class="fas fa-id-card me-2"></i>
+                    Wishlist</a>
+                <a href="/Wallet" class="list-group-item custom-list-item"><i class="fas fa-flag me-2"></i> Wallet</a>
+            </ul>
+        </div>
+    </div>
+
+    <main>
+        <!-- Return Reason Modals -->
+        <% order.forEach(function (order) { %>
+            <div class="modal fade" id="returnReasonModal<%= order._id %>" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reason for Return</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form onsubmit="submitReturnReason('<%= order._id %>', event)">
+                                <div class="mb-3">
+                                    <label class="form-label">Please provide a reason:</label>
+                                    <textarea class="form-control" name="returnReason"
+                                        id="returnReason_<%= order._id %>" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+
+                <!-- Orders -->
+                <div class="container mt-5">
+                    <h2>Your Order List</h2>
+                    <div class="row">
+                        <% if (order && order.length> 0) { %>
+                            <% order.forEach(function (order) { %>
+                                <div class="col-lg-6 mb-4">
+                                    <ul class="list-group list-group-numbered">
+                                        <li class="order-item">
+                                            <h4>Order ID: <strong>
+                                                    <%= order._id %>
+                                                </strong></h4>
+                                            <p><strong>Payment Method:</strong>
+                                                <%= order.PaymentMethod %>
+                                            </p>
+                                            <p><strong>Order Status:</strong>
+                                                <%= order.Status %>
+                                            </p>
+                                            <p><strong>Payment Status:</strong>
+                                                <%= order.PaymentStatus %>
+                                            </p>
+                                            <p><strong>Date:</strong>
+                                                <%= order.OrderDate.toLocaleDateString() %>
+                                            </p>
+
+                                            <!-- Progress -->
+                                            <div class="progress">
+                                                <% if (order.Status==='Order Placed' ) { %>
+                                                    <div class="progress-bar w-25 bg-info"></div>
+                                                    <% } else if (order.Status==='Shipped' ) { %>
+                                                        <div class="progress-bar w-50 bg-warning"></div>
+                                                        <% } else if (order.Status==='Delivered' ) { %>
+                                                            <div class="progress-bar w-100 bg-success"></div>
+                                                            <% } else if (order.Status==='Cancelled' ) { %>
+                                                                <div class="progress-bar w-100 bg-danger"></div>
+                                                                <% } else if (order.Status==='Return Pending' ) { %>
+                                                                    <div class="progress-bar w-75 bg-warning"></div>
+                                                                    <% } else if (order.Status==='Return Accepted' ) {
+                                                                        %>
+                                                                        <div class="progress-bar w-100 bg-success">
+                                                                        </div>
+                                                                        <% } else if (order.Status==='Return Canceled' )
+                                                                            { %>
+                                                                            <div class="progress-bar w-100 bg-dark">
+                                                                            </div>
+                                                                            <% } %>
+                                            </div>
+
+                                            <!-- Timeline -->
+                                            <div class="horizontal-timeline my-2">
+                                                <ul class="list-inline d-flex justify-content-between">
+                                                    <% if (order.Status==='Order Placed' ) { %>
+                                                        <li>
+                                                            <p class="py-1 px-2 rounded text-white bg-info">Order Placed
+                                                            </p>
+                                                        </li>
+                                                        <% } else if (order.Status==='Shipped' ) { %>
+                                                            <li>
+                                                                <p class="py-1 px-2 rounded text-white bg-warning">
+                                                                    Shipped</p>
+                                                            </li>
+                                                            <li>
+                                                                <p class="py-1 px-2 rounded text-white">On the way<br><i
+                                                                        class="fa-solid fa-truck fa-bounce fa-2xl"></i>
+                                                                </p>
+                                                            </li>
+                                                            <% } else if (order.Status==='Delivered' ) { %>
+                                                                <li class="text-end">
+                                                                    <p class="py-1 px-2 rounded text-white bg-success">
+                                                                        Delivered</p>
+                                                                </li>
+                                                                <% } else if (order.Status==='Cancelled' ) { %>
+                                                                    <li>
+                                                                        <p
+                                                                            class="py-1 px-2 rounded text-white bg-danger">
+                                                                            Order Cancelled</p>
+                                                                    </li>
+                                                                    <% } else if (order.Status==='Return Pending' ) { %>
+                                                                        <li>
+                                                                            <p
+                                                                                class="py-1 px-2 rounded text-white bg-warning">
+                                                                                Return Pending</p>
+                                                                        </li>
+                                                                        <% } else if (order.Status==='Return Accepted' )
+                                                                            { %>
+                                                                            <li>
+                                                                                <p
+                                                                                    class="py-1 px-2 rounded text-white bg-success">
+                                                                                    Returned</p>
+                                                                            </li>
+                                                                            <% } else if
+                                                                                (order.Status==='Return Canceled' ) { %>
+                                                                                <li>
+                                                                                    <p
+                                                                                        class="py-1 px-2 rounded text-white bg-dark">
+                                                                                        Return Rejected</p>
+                                                                                </li>
+                                                                                <% } %>
+                                                </ul>
+                                            </div>
+
+                                            <!-- Buttons -->
+                                            <div class="d-flex justify-content-end">
+                                                <% if (order.Status==='Delivered' ) { %>
+                                                    <a data-bs-toggle="modal"
+                                                        data-bs-target="#returnReasonModal<%= order._id %>"
+                                                        class="btn btn-danger me-2">Return</a>
+                                                    <button class="btn btn-warning"
+                                                        onclick="downloadInvoice('<%= order._id %>')">Download
+                                                        Invoice</button>
+                                                    <% } else if (order.Status==='Return Accepted' ) { %>
+                                                        <a href="/order/details/<%= order._id %>"
+                                                            class="btn btn-primary me-2">View Details</a>
+                                                        <button class="btn btn-warning"
+                                                            onclick="downloadInvoice('<%= order._id %>')">Download
+                                                            Invoice</button>
+                                                        <button class="btn btn-danger" disabled>Return Accepted</button>
+                                                        <% } else if (order.Status==='Return Pending' ) { %>
+                                                            <a href="/order/details/<%= order._id %>"
+                                                                class="btn btn-primary me-2">View Details</a>
+                                                            <a href="#"
+                                                                onclick="cancelReturnRequest('<%= order._id %>')"
+                                                                class="btn btn-danger me-2">Cancel Request</a>
+                                                            <button class="btn btn-warning"
+                                                                onclick="downloadInvoice('<%= order._id %>')">Download
+                                                                Invoice</button>
+                                                            <% } else if (order.Status==='Return Canceled' ) { %>
+                                                                <a href="/order/details/<%= order._id %>"
+                                                                    class="btn btn-primary me-2">View Details</a>
+                                                                <button class="btn btn-warning me-2"
+                                                                    onclick="downloadInvoice('<%= order._id %>')">Download
+                                                                    Invoice</button>
+                                                                <button class="btn btn-danger" disabled>Request
+                                                                    Rejected</button>
+                                                                <% } else if (order.Status==='Order Placed' ||
+                                                                    order.Status==='Shipped' ||
+                                                                    order.Status==='Cancelled' ) { %>
+                                                                    <a href="/order/details/<%= order._id %>"
+                                                                        class="btn btn-primary me-2">View Details</a>
+                                                                    <button class="btn btn-warning me-2"
+                                                                        onclick="downloadInvoice('<%= order._id %>')">Download
+                                                                        Invoice</button>
+                                                                    <% if (order.Status !=='Cancelled' ) { %>
+                                                                        <button class="btn btn-danger remove-button"
+                                                                            data-order-id="<%= order._id %>">Cancel
+                                                                            Order</button>
+                                                                        <% } %>
+                                                                            <% } %>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <p class="text-center">You have no orders yet.</p>
+                                        <% } %>
+                    </div>
+
+                    <!-- Pagination -->
+                    <% if (order.length> 0) { %>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                    <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                                </li>
+                                <% for (let i=1; i <=totalPages; i++) { %>
+                                    <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                        <a class="page-link" href="?page=<%= i %>">
+                                            <%= i %>
+                                        </a>
+                                    </li>
+                                    <% } %>
+                                        <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                            <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+                                        </li>
+                            </ul>
+                        </nav>
+                        <% } %>
+                </div>
+    </main>
+
+    <!-- Footer -->
+    <%- include('../layouts/footer') %>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="/js/userorderlist.js"></script>
+</body>
+
+</html>

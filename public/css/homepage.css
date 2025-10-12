@@ -1,0 +1,101 @@
+/* Reset some default styles for better consistency */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    /* Needed for sticky footer */
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    /* Flex layout */
+    flex-direction: column;
+    /* Vertical stacking */
+}
+
+/* Make the main content area take all remaining space */
+body>section {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar {
+    background-color: black;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(230, 174, 49);
+}
+
+.navbar-brand h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+}
+
+.nav-link {
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Change the color of the navigation links on hover */
+.navbar-nav .nav-item a:hover {
+    color: rgba(230, 174, 49);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    background-color: white;
+}
+
+.dropdown-menu a {
+    color: rgba(230, 174, 49);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+/* Footer (sticky at bottom) */
+footer {
+    margin-top: auto;
+    /* Pushes footer down */
+    background-color: black;
+    /* Same as navbar */
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    border-top: 1px solid rgba(230, 174, 49);
+}
+
+/* Product Card Styles */
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.badge-danger {
+    background-color: #d61629;
+}
+
+.badge-circle {
+    border-radius: 100%;
+}
+
+.card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive Font Sizes */
+@media (max-width: 768px) {
+    .navbar-brand h3 {
+        font-size: 16px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .dropdown-menu a {
+        font-size: 14px;
+    }
+}

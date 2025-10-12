@@ -1,0 +1,174 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden;
+  /* prevent unwanted horizontal scroll */
+}
+
+.navbar {
+  background-color: #333;
+  padding: 0;
+  border-bottom: 1px solid #e6ae31;
+}
+
+.navbar-brand h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.nav-link {
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Change the color of the navigation links on hover */
+.navbar-nav .nav-item a:hover {
+  color: #e6ae31;
+}
+
+/* Custom CSS to change the background color of the dropdown menu */
+.dropdown-menu {
+  background-color: #fff;
+  min-width: 150px;
+  /* fix width */
+  left: 0;
+  right: auto;
+  text-align: left;
+}
+
+/* Custom CSS to change the text color of links in the dropdown menu */
+.dropdown-menu a {
+  color: #e6ae31;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
+/* ------------------------CARTPAGE--------------------------- */
+
+.icon-hover-primary:hover {
+  border-color: #3b71ca !important;
+  background-color: white !important;
+}
+
+.icon-hover-primary:hover i {
+  color: #3b71ca !important;
+}
+
+.icon-hover-danger:hover {
+  border-color: #dc4c64 !important;
+  background-color: white !important;
+}
+
+.icon-hover-danger:hover i {
+  color: #dc4c64 !important;
+}
+
+.transparent-input {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  width: 12vw;
+  font-size: inherit;
+  text-align: right;
+}
+
+/* Quantity input box */
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  height: 40px;
+  margin: 0;
+}
+
+/* Buttons same size as input */
+.input-group .btn-dark {
+  height: 40px;
+  width: 40px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0;
+  line-height: 1;
+  border-radius: 0;
+}
+
+/* Optional: rounded edges for left/right ends */
+.input-group .decrease-quantity {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.input-group .increase-quantity {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  /* keep in a row */
+}
+
+.input-group .form-control.quantity-input {
+  flex: 0 0 60px;
+  /* fixed width */
+  max-width: 60px;
+  margin: 0;
+}
+
+
+/* Sticky summary card */
+.col-lg-3 .card {
+  position: sticky;
+  top: 80px;
+  /* how far from top it stays */
+  z-index: 10;
+}
+
+/* Keep price aligned under quantity */
+.cart-quantity-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* center under quantity */
+  gap: 6px;
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 576px) {
+  .input-group .form-control.quantity-input {
+    flex: 0 0 45px;
+    max-width: 45px;
+    font-size: 14px;
+  }
+
+  .input-group .btn-dark {
+    flex: 0 0 35px;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+}
+
+/* Sticky summary card only for large screens */
+@media (min-width: 992px) {
+  .col-lg-3 .card {
+    position: sticky;
+    top: 80px;
+    /* distance from top of screen, below navbar */
+    z-index: 10;
+  }
+}
