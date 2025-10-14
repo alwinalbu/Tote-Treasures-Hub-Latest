@@ -52,7 +52,7 @@ module.exports = {
 
     GetConatctpage:async(req,res)=>{
         try {
-            res.render('user/contactus',)
+            res.render('user/contactUs',)
         } catch (error) {
             res.render('errorpage'); 
         }
@@ -546,7 +546,7 @@ module.exports = {
                         console.error(err);
                     });
             }, 60000);
-            res.render("user/otpverification", { messages: req.flash(), user: req.session.user });
+            res.render("user/otpVerification", { messages: req.flash(), user: req.session.user });
         } catch (error) {
             console.log(error);
             res.redirect("/login");
@@ -617,7 +617,7 @@ module.exports = {
             req.flash("error", "OTP not validated. Please verify your email first.");
             return res.redirect("/forgotpassword");
         }
-        res.render('user/changepassword', { messages: req.flash(), user: req.session.user });
+        res.render('user/changePassword', { messages: req.flash(), user: req.session.user });
     },
 
 

@@ -6,7 +6,7 @@ const User=require('../models/userSchema')
 module.exports = {
     getAddBrand:(req, res) => {
         const adminName = req.session.admin.Name;
-        res.render("admin/addbrand",{ adminName });
+        res.render("admin/addBrand",{ adminName });
       },
 
       
@@ -57,7 +57,7 @@ module.exports = {
         const adminName = req.session.admin.Name;
         const _id = req.params._id;
         const brand = await Brand.findById(_id);
-        res.render("admin/editbrand",{brand,adminName})
+        res.render("admin/editBrand",{brand,adminName})
       },
 
       postEditBrand: async (req, res) => {

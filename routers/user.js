@@ -102,7 +102,7 @@ router.get('/orderSuccess', requireSession, calculateCartCount, userController.g
 
 // ----------------- User Profile -----------------
 router.get('/profile', requireSession, calculateCartCount, userController.profile);
-router.post('/changepassword', requireSession,currentPasswordValidation,passwordValidation, confirmPasswordValidation, passvalidate, userController.changePassword);
+router.post('/changePassword', requireSession,currentPasswordValidation,passwordValidation, confirmPasswordValidation, passvalidate, userController.changePassword);
 
 router.post('/addAddress', requireSession, calculateCartCount, userController.postAddressForm);
 router.get('/editAddress', requireSession, calculateCartCount, userController.getEditAddress);

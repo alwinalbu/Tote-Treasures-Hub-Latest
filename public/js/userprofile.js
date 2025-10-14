@@ -28,7 +28,7 @@ function submitPasswordChangeForm(e) {
 
     console.log('Form submitted!');
     $.ajax({
-        url: '/changepassword',
+        url: '/changePassword',
         method: 'POST',
         data: $('#passwordChangeForm').serialize(),
         success: (response) => {

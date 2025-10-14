@@ -27,7 +27,7 @@ module.exports = {
       res.render('admin/couponpage', { coupons });
     } catch (error) {
       console.error('Error fetching coupons:', error);
-      res.status(500).render('error_template', { error: 'Internal Server Error' });
+      res.status(500).render('errorpage', { error: 'Internal Server Error' });
     }
   },
   

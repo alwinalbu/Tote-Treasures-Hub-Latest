@@ -61,7 +61,7 @@ router.route('/userlist/:_id')
 
 // --------------------------------Brand-----------------------------
 
- router.route("/addbrand")
+ router.route("/addBrand")
 .get(adminAuth.adminTokenAuth,brandController.getAddBrand)
 .post(brandController.postAddBrand)
 
@@ -101,7 +101,7 @@ router.route('/deleteCategory/:id')
 router.route("/product")
 .get(adminAuth.adminTokenAuth,productController.getProduct)
 
-router.route("/addproduct")
+router.route("/addProduct")
 .get(adminAuth.adminTokenAuth,productController.getAddProduct)
 .post(upload.fields([{ name: 'image1', maxCount: 1 }, { name: 'image2', maxCount: 1 }, { name: 'image3', maxCount: 1 }]),productController.postAddProduct)
 

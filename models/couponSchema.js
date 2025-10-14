@@ -44,7 +44,7 @@ const couponSchema = new Schema({
       },
       status: {
         type: String,
-        enum: ["used", "pending"], // "pending" = applied but not checked out yet
+        enum: ['used', 'unused', 'expired', 'removed'],
         default: "used"
       },
       usedAt: {
