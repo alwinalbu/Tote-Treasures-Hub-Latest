@@ -1,28 +1,22 @@
-<footer class="navbar navbar-expand-lg navbar-dark bottom-0" style="background-color: black; border-top: 1px solid #e6ae31">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        
-        <a class="navbar-brand" href="">
-            <img src="/images/logo.png" style="max-height: 70px" alt="auto">
-            <h3 class="text-white fw-bold m-0 d-inline align-middle">ToteTreasures Hub</h3>
+
+<footer class="mt-auto text-light  border-top" style="background-color: #000;">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <a class="navbar-brand d-flex align-items-center mb-3 mb-md-0" href="/homepage">
+            <img src="/images/logo.png" alt="Logo" style="height: 40px;" class="me-2">
+            <span class="fw-bold text-warning fs-6">ToteTreasures Hub</span>
         </a>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto"> <!-- Add ms-auto class -->
-                <li class="nav-item">
-                    <a href="/homepage" class="nav-link px-2 text-white">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/aboutus" class="nav-link px-2 text-white">About Us</a>
-                </li>
-                <li class="nav-item ml-auto"> <!-- Use ml-auto to push items to the right -->
-                    <a href="/contactUs" class="nav-link px-2 text-white">Contact Us</a>
-                </li>
-            </ul>
-        </div>
-        <ul class="nav col-12 col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3 ps-4"><a href="https://www.instagram.com/" class="text-white"><i class="fa-brands fa-instagram fw-bold fs-2"></i></a></li>
-            <li class="ms-3"><a href="https://www.linkedin.com/home" class="text-white"><i class="fa-brands fa-linkedin fw-bold fs-2"></i></a></li>
+        <ul class="nav flex-column flex-md-row text-center mb-3 mb-md-0">
+            <li class="nav-item"><a href="/homepage" class="nav-link px-2 text-white">Home</a></li>
+            <li class="nav-item"><a href="/aboutus" class="nav-link px-2 text-white">About</a></li>
+            <li class="nav-item"><a href="/contactUs" class="nav-link px-2 text-white">Contact</a></li>
         </ul>
+
+        <div class="d-flex justify-content-center justify-content-md-end">
+            <a href="https://www.instagram.com/" class="text-white me-3 fs-4"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/home" class="text-white fs-4"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
     </div>
-    <p class="mb-1 text-white">&copy; <%= new Date().getFullYear() %> ToteTreasures Hub. All Rights Reserved.</p>
+    <p class="text-center text-secondary small mt-2 mb-0">&copy; <%= new Date().getFullYear() %> ToteTreasures Hub. All
+            Rights Reserved.</p>
 </footer>

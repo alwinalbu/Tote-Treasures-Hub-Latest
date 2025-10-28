@@ -1,132 +1,219 @@
-/* Reset default margin and padding */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body styles */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #080808;
-    color: white;
-  }
-  
-  .bg-custom {
-    /* background: linear-gradient(90deg, rgb(0, 0, 0), rgb(0, 0, 0));  */
-    border-bottom: 2px solid #FFA932; /* Customize the border color */
+
+body {
+  background-color: #0e0e0e;
+  color: #f1f1f1;
+  font-family: 'Poppins', sans-serif;
+
 }
-.white-text {
+
+/* Navbar */
+.main-nav {
+  background: rgba(17, 17, 17, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #222;
+  padding: 0.8rem 1rem;
+}
+
+.main-nav .header {
+  color: #ffc107;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand img {
+  height: 60px;
+  width: auto;
+}
+
+/* Sidebar (Offcanvas) */
+.offcanvas {
+  background-color: #111 !important;
   color: white;
-  font-weight: 700;
-}
-  /* Header styles */
-  .header {
-    color: white;
-    font-weight: 700;
-    text-align: center;
-    /* padding: 20px; */
-    font-family: 'Italianno', cursive;
-  }
-  
-  .main-nav{
-    background-image: linear-gradient(to right, rgb(19, 2, 31), rgb(213, 236, 129));
-    border-bottom: 3px solid #FFA932;
-  }
-
-  .header h1 {
-    font-size: 36px;
-  }
-  
-  /* Offcanvas button styles */
-  .position-sticky {
-    position: sticky;
-    /* top: 80px; */
-    left: 20px;
-    z-index: 1;
-  }
-
-  .table-responsive {
-    margin-top: 30px; /* Adjust this value as needed */
+  border-right: 1px solid #222;
 }
 
-.form-group {
-    margin-top: 120px; 
+.offcanvas-header {
+  background-color: #111;
+  color: #ffc107;
+  border-bottom: 1px solid #222;
 }
-  
-  /* Offcanvas styles */
-  .offcanvas {
-    background-image: linear-gradient(to right, rgb(19, 2, 31), rgb(213, 236, 129));
-    width: 250px;
-  }
-  
-  /* Offcanvas header styles */
-  .offcanvas-header {
-    color: white;
-  }
-  
-  .offcanvas-title {
-    font-size: 20px;
-    padding: 10px;
-  }
-  
-  /* List item styles */
-  .custom-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .custom-list-item {
-    padding: 10px;
-    text-decoration: none;
-    color: #000;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-  }
-  
-  .custom-list-item i {
-    margin-right: 10px;
-    font-size: 20px;
-  }
-  
-  .custom-list-item:hover {
-    background-color: #f3ffe0;
-  }
-  
-  .form-label{
-    color: #000;
-  }
-  .modal-title{
-    color: #000;
-  }
-  label{
-    color: white;
-  }
 
-  /* Your existing styles */
+.offcanvas-body {
+  background-color: #111;
+  padding: 0;
+}
 
-/* Modal styles */
+.custom-list-item {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.custom-list-item:hover {
+  background-color: #222;
+  color: #ffc107;
+}
+
+.custom-list-item.active {
+  background-color: #ffc107;
+  color: #111 !important;
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn-outline-light {
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.btn-outline-light:hover {
+  background-color: #ffc107;
+  color: #111;
+}
+
+.btn-outline-info {
+  border-color: #17a2b8;
+  color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+  background-color: #17a2b8;
+  color: #111;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #b02a37;
+}
+
+/* Dashboard Cards */
+.card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  color: #111;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.15);
+}
+
+.card-header {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #111;
+  background: rgba(255, 255, 255, 0.3);
+  border-bottom: none;
+}
+
+.card-body {
+  color: #111;
+}
+
+/* Tables inside cards */
+.table {
+  background-color: #fff;
+  color: #111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: #ffc107;
+  color: #111;
+  border: none;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Modal Styling */
 .modal-content {
   background-color: #1a1a1a;
-  color: white;
+  color: #fff;
+  border: 1px solid #333;
 }
 
 .modal-header {
-  border-bottom: 2px solid #FFA932;
+  background-color: #111;
+  color: #ffc107;
+  border-bottom: 1px solid #333;
 }
 
-.modal-title {
-  color: #FFA932;
+.form-check-label {
+  color: #fff;
 }
 
-.modal-body {
-  background-color: #080808;
-  color: white;
+/* Dropdown Menu (Sales Graph) */
+.dropdown-menu {
+  background-color: #111;
+  border: 1px solid #333;
 }
 
-.modal-footer {
-  border-top: 2px solid #FFA932;
+.dropdown-item {
+  color: #ddd;
 }
 
-/* Add more styles as needed for your specific modal */
+.dropdown-item:hover {
+  background-color: #ffc107;
+  color: #111;
+}
+
+/* Chart Containers */
+canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+  color: #fff;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  margin-right: 5px;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #ffc107;
+  color: #111;
+  border-color: #ffc107;
+}
+
+/* Scrollbars for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: 110px;
+  }
+
+  .navbar-brand img {
+    height: 45px;
+  }
+
+  .main-nav .header {
+    font-size: 1.2rem;
+  }
+
+  .card-header {
+    font-size: 1rem;
+  }
+}

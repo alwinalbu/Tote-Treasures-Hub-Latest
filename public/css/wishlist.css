@@ -1,0 +1,75 @@
+body {
+    background-color: #0a0a0a;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    /* for fixed navbar */
+}
+
+/* Wishlist section */
+.wishlist-section {
+    min-height: 75vh;
+}
+
+.wishlist-table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wishlist-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Buttons */
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Table header */
+.table-warning {
+    background-color: #fa8232 !important;
+    color: #000 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wishlist-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    table {
+        font-size: 0.85rem;
+    }
+}
+
+/* Navbar Shrink Effect */
+#mainNavbar.navbar-shrink {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    box-shadow: 0 2px 8px rgba(250, 130, 50, 0.2);
+}
+
+#mainNavbar {
+    transition: all 0.3s ease-in-out;
+    z-index: 1030;
+}

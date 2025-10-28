@@ -1,0 +1,100 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0a0a0a;
+    color: white;
+    margin: 0;
+}
+
+.text-gold {
+    color: #e6ae31;
+}
+
+.navbar {
+    border-bottom: 1px solid #e6ae31;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+}
+
+.signup-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-container {
+    background-color: #111;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.signup-image {
+    background: url("/images/signup-banner.jpg") center/cover no-repeat;
+}
+
+.form-container {
+    background-color: #181818;
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+.input-group-text {
+    background-color: #222;
+    border: none;
+    color: #e6ae31;
+}
+
+.form-control {
+    background-color: #222;
+    border: 1px solid #333;
+    color: white;
+    padding: 10px;
+}
+
+.form-control:focus {
+    background-color: #222;
+    color: white;
+    border-color: #e6ae31;
+    box-shadow: 0 0 5px rgba(230, 174, 49, 0.5);
+}
+
+.btn-gold {
+    background-color: #e6ae31;
+    color: #111;
+    font-weight: 600;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: #ffb733;
+    transform: translateY(-2px);
+}
+
+.alert {
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+.alert-danger {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid #d93025;
+}
+
+.alert-success {
+    background-color: rgba(0, 128, 0, 0.1);
+    border: 1px solid #0b8a42;
+}
+
+@media (max-width: 768px) {
+    .signup-container {
+        margin: 20px;
+    }
+}

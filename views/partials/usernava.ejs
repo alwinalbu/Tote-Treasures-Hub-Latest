@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
@@ -9,7 +9,7 @@
             <h3 class="text-white fw-bold m-0 d-inline align-middle">ToteTreasures Hub</h3>
         </a>
 
-        <!-- Move the search form outside of the collapse button -->
+        
         <form class="d-flex" role="search" action="/search" method="GET">
             <input class="form-control me-2" type="search" name="searchNames" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -20,7 +20,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto"> <!-- Add ms-auto class -->
+            <ul class="navbar-nav ms-auto"> 
                 <li class="nav-item">
                     <a class="nav-link" href="/homepage">Home</a>
                 </li>
@@ -37,7 +37,7 @@
                      <% } %>
                     </a>
                  </li>
-                <li class="nav-item ml-auto"> <!-- Use ml-auto to push items to the right -->
+                <li class="nav-item ml-auto"> 
                     <% if (user) { %>
                         <div class="dropdown">
                             <a href="#" class="dropdown-toggle nav-link" id="usernameLink" data-bs-toggle="dropdown">
@@ -52,14 +52,96 @@
                             </ul>
                         </div>
                         <% } else { %>
-                            <div class="d-flex align-items-center"> <!-- Add a div wrapper -->
+                            <div class="d-flex align-items-center"> 
                                 <a class="nav-link" href="/signup">
                                     <i class="fa-solid fa-user-plus"></i> Sign Up
                                 </a>
-                                <span class="nav-link">|</span> <!-- Use a delimiter like "|" -->
+                                <span class="nav-link">|</span> 
                                 <a class="nav-link" href="/login">
                                     <i class="fa-solid fa-sign-in-alt"></i> Login
                                 </a>
+                            </div>
+                            <% } %>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav> -->
+
+<!-- ================= Navbar ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark py-2 shadow-sm" style="background-color: #000;">
+    <div class="container-fluid px-4">
+
+        <!-- Offcanvas Toggle -->
+        <button class="btn btn-outline-warning border-0" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+            <i class="fa-solid fa-bars fs-5"></i>
+        </button>
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="/homepage">
+            <img src="/images/logo.png" alt="Logo" style="height: 45px;" class="me-2">
+            <span class="fw-bold text-warning fs-5">ToteTreasures Hub</span>
+        </a>
+
+        <!-- Search Bar -->
+        <form class="d-none d-md-flex ms-auto me-3" role="search" action="/search" method="GET"
+            style="max-width: 300px;">
+            <input class="form-control form-control-sm" type="search" name="searchNames"
+                placeholder="Search products..." aria-label="Search">
+            <button class="btn btn-sm btn-outline-warning ms-2" type="submit">Search</button>
+        </form>
+
+        <!-- Navbar Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/homepage">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/shop">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/wishlist">
+                        Wishlist <i class="fa-solid fa-heart text-danger"></i>
+                    </a>
+                </li>
+                <li class="nav-item position-relative">
+                    <a class="nav-link text-white" href="/cartpage">
+                        Cart <i class="fa-solid fa-cart-shopping text-warning"></i>
+                        <% if (cartCount> 0) { %>
+                            <span id="cart-quantity"
+                                class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                                <%= cartCount %>
+                            </span>
+                            <% } %>
+                    </a>
+                </li>
+                <li class="nav-item dropdown ms-lg-3">
+                    <% if (user) { %>
+                        <a href="#" class="dropdown-toggle nav-link text-white" id="usernameLink"
+                            data-bs-toggle="dropdown">
+                            <%= user.username %> <i class="fa-solid fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                        <% } else { %>
+                            <div class="d-flex align-items-center">
+                                <a class="nav-link text-white" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign
+                                    Up</a>
+                                <span class="mx-1 text-secondary">|</span>
+                                <a class="nav-link text-white" href="/login"><i class="fa-solid fa-sign-in-alt"></i>
+                                    Login</a>
                             </div>
                             <% } %>
                 </li>

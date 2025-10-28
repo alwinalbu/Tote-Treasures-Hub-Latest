@@ -1,0 +1,168 @@
+/* ====== GLOBAL STYLES ====== */
+body {
+    background-color: #0f0f0f;
+    color: #eaeaea;
+    font-family: "Open Sans", sans-serif;
+    min-height: 100vh;
+}
+
+.main-nav {
+    background: #000;
+    border-bottom: 1px solid #f5a623;
+    padding: 10px 20px;
+}
+
+.header {
+    font-size: 1.6rem;
+    color: #f5a623;
+    font-weight: 700;
+}
+
+/* ====== SIDEBAR ====== */
+/* Make entire offcanvas sidebar dark */
+.offcanvas {
+    background-color: #111 !important;
+    color: white;
+    border-right: 1px solid #222;
+}
+
+/* Ensure the list background matches */
+.offcanvas-body {
+    background-color: #111;
+    color: white;
+    padding: 0;
+}
+
+/* Optional: darken scrollbars inside offcanvas */
+.offcanvas-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.offcanvas-body::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 3px;
+}
+/* ====== COUPON PAGE HEADING ====== */
+.container h2 {
+    font-weight: 700;
+    color: #f5a623;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ====== ADD COUPON BUTTON ====== */
+.btn-success {
+    background: #28a745;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    background: #20c997;
+}
+
+/* ====== COUPON CARD ====== */
+.coupon-card {
+    background: #1a1a1a;
+    color: #ddd;
+    border-radius: 10px;
+    border: 1px solid #2a2a2a;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.coupon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(245, 166, 35, 0.2);
+}
+
+.coupon-card .card-body {
+    padding: 1.5rem;
+}
+
+.coupon-card .card-title {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+
+/* ====== BADGES ====== */
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* ====== MODALS ====== */
+.modal-content {
+    background: #121212;
+    color: #fff;
+    border-radius: 12px;
+    border: 1px solid #f5a623;
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.3);
+}
+
+.modal-header {
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.modal-title {
+    color: #f5a623;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #f5a623;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #d48d20;
+}
+
+/* ====== PAGINATION ====== */
+.pagination {
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.page-item .page-link {
+    background-color: #1a1a1a;
+    color: #f5a623;
+    border: 1px solid #333;
+    transition: 0.3s ease;
+}
+
+.page-item .page-link:hover {
+    background-color: #f5a623;
+    color: #000;
+}
+
+.page-item.active .page-link {
+    background-color: #f5a623;
+    color: #000;
+    border: 1px solid #f5a623;
+}
+
+/* ====== RESPONSIVE DESIGN ====== */
+@media (max-width: 768px) {
+    .coupon-card {
+        margin-bottom: 15px;
+    }
+
+    .main-nav .header {
+        font-size: 1.2rem;
+    }
+
+    .btn-success {
+        font-size: 0.9rem;
+    }
+
+    .coupon-card .card-body {
+        padding: 1rem;
+    }
+}

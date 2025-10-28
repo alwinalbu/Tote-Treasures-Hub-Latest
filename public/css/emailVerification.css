@@ -1,99 +1,117 @@
-
-body, html {
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0a0a0a;
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
 }
 
 .navbar {
-    background-color: #333;
-    padding:0;
-    border-bottom: 1px solid #e6ae31;
+    background-color: #000 !important;
 }
 
-.navbar-brand h3 {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    margin: 0;
+.verification-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #000000, #1c1c1c);
+    padding-top: 100px;
+    padding-bottom: 60px;
+}
+
+.verification-card {
+    background-color: #111;
     color: #fff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.nav-link {
+.verification-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(250, 130, 50, 0.3);
+}
+
+.form-control {
+    background-color: #1e1e1e;
+    border: 1px solid #fa8232;
     color: #fff;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
+    border-radius: 8px;
 }
 
-/* Change the color of the navigation links on hover */
-.navbar-nav .nav-item a:hover {
-    color: #e6ae31;
+.form-control:focus {
+    box-shadow: 0 0 8px rgba(250, 130, 50, 0.7);
+    border-color: #fa8232;
+    outline: none;
+    background-color: #262626;
 }
 
-/* Custom CSS to change the background color of the dropdown menu */
-.dropdown-menu {
-    background-color: #fff;
+.btn-warning {
+    background-color: #fa8232 !important;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-/* Custom CSS to change the text color of links in the dropdown menu */
-.dropdown-menu a {
-    color: #e6ae31;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+.btn-warning:hover {
+    background-color: #ff9933 !important;
+    transform: scale(1.02);
 }
 
-/* Center the content vertically and horizontally */
-.container-1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Center the form vertically */
-    background-color: #0a0a0a; /* Add your preferred background color */
+.timer-container {
+    margin-top: 15px;
 }
 
-/* Style the login form container */
-.login-form {
-    background-color: #0a0a0a;
-    box-shadow: 0px 0px 10px rgba(230, 174, 49);
-    border-radius: 5px;
-    padding: 20px;
-    width: 90%; 
-    max-width: 400px; 
-    text-align: center;
-    height: auto; 
-    margin: 20px; 
+/* Timer Text */
+#timer {
+    color: #ffffff;
 }
 
-/* .card {
-    width: 30rem;
-}
-
-.card-title, .card-subtitle {
-    color: white;
-    text-align: center;
-} */
-
-.verify input {
+/* Make OTP input text visible and readable */
+.verify input,
+#number {
     width: 100%;
     padding: 10px;
     border: 1px solid #FA8232;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-top: 5px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    /* 👈 Text visible */
+    font-size: 1.2rem;
+    /* 👈 Bigger, clear digits */
+    text-align: center;
+    /* 👈 Center the numbers */
 }
 
-#emailVerification {
-    background-color: #fa8232;
-    color: white;
-    border: none;
-    width: -webkit-fill-available;
+.verify input::placeholder,
+#number::placeholder {
+    color: #b5b5b5;
+    /* 👈 Light grey placeholder */
+    opacity: 0.8;
 }
 
-.text-danger {
-    color: #fa8232;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .verification-card {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 1.5rem !important;
+    }
 }
 
-#resendOtp {
-    display: none;
-}
+@media (max-width: 576px) {
+    h4 {
+        font-size: 1.25rem;
+    }
 
+    #timer {
+        font-size: 1.1rem;
+    }
+
+    .btn {
+        font-size: 0.95rem;
+    }
+}

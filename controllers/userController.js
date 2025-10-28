@@ -99,7 +99,16 @@ module.exports = {
 
             console.log("✅ Google user logged in:", user.Email);
 
-            res.redirect("/homepage");
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Google login session save error:", err);
+                    req.flash("error", "Google login failed, please retry.");
+                    return res.redirect("/login");
+                }
+
+                console.log("✅ Session saved successfully for Google user:", user.Email);
+                res.redirect("/homepage");
+            });
         })(req, res, next);
     },
    
@@ -245,8 +254,17 @@ module.exports = {
                 maxAge: 60 * 60 * 1000 // 1 hour
             });
 
-            // 6. Redirect to homepage
-            res.redirect("/homepage");
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session save error during login:", err);
+                    req.flash("error", "Login session error, please try again.");
+                    return res.redirect("/login");
+                }
+
+                console.log("✅ Session saved successfully for login user:", user.Email);
+                res.redirect("/homepage");
+            });
+
         } catch (err) {
             console.error("Login error:", err);
             req.flash("error", "Something went wrong during login.");
@@ -255,16 +273,37 @@ module.exports = {
     },
 
 
+    // signup: (req, res) => {
+    //     const referralCode = req.query.referralCode;
+    //     console.log("Referral Code from URL:", referralCode);
+
+        
+    //     req.session.referralCode = referralCode;
+
+    //     const error = req.flash('error');
+    //     res.render("user/signup", { err: error, user: '', referralCode: referralCode });
+    // },
+
     signup: (req, res) => {
         const referralCode = req.query.referralCode;
         console.log("Referral Code from URL:", referralCode);
 
-        // Store the referralCode in the session
+        // Store the referral code in the session
         req.session.referralCode = referralCode;
 
-        const error = req.flash('error');
-        res.render("user/signup", { err: error, user: '', referralCode: referralCode });
+        // 🔹 Fetch both error and success flash messages safely
+        const error = req.flash("error") || [];
+        const success = req.flash("success") || [];
+
+        // 🔹 Always pass both to the EJS file
+        res.render("user/signup", {
+            err: error,
+            success: success,
+            user: "",
+            referralCode: referralCode,
+        });
     },
+
 
     postUserSignup: async (req, res) => {
         try {
@@ -395,7 +434,17 @@ module.exports = {
             delete req.session.pendingUser;
             delete req.session.OtpValid;
 
-            res.json({ success: true, redirectUrl: "/homepage" });
+            
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session save error:", err);
+                    return res.json({ success: false, message: "Session save failed." });
+                }
+
+                console.log("✅ Session saved successfully for", newUser.Email);
+                return res.json({ success: true, redirectUrl: "/homepage" });
+            });
+
         } catch (error) {
             console.error(error);
             req.flash("error", "Email verification failed.");

@@ -7,29 +7,82 @@ const Cart = require('../models/cartSchema')
 module.exports = {
 
   // -----------------------------------------------Get Coupon------------------------------------------------------
+  // getCoupon: async (req, res) => {
+  //   try {
+  //     const today = new Date();
+
+  //     let coupons = await Coupon.find().populate({
+  //       path: 'usedBy.userId',
+  //       model: 'User',
+  //     });
+
+  //     // Update expired coupons in DB
+  //     for (let coupon of coupons) {
+  //       if (coupon.expiration_date < today && coupon.Status !== "Expired") {
+  //         coupon.Status = "Expired";
+  //         await coupon.save();
+  //       }
+  //     }
+
+  //     res.render('admin/couponpage', { coupons });
+  //   } catch (error) {
+  //     console.error('Error fetching coupons:', error);
+  //     res.status(500).render('errorpage', { error: 'Internal Server Error' });
+  //   }
+  // },
+
   getCoupon: async (req, res) => {
     try {
       const today = new Date();
 
-      let coupons = await Coupon.find().populate({
-        path: 'usedBy.userId',
-        model: 'User',
+      // Pagination setup
+      const page = parseInt(req.query.page) || 1;
+      const limit = 6;
+      const skip = (page - 1) * limit;
+
+      // Fetch total count for pagination
+      const totalCoupons = await Coupon.countDocuments();
+
+      // 🔹 Auto-update expired coupons
+      await Coupon.updateMany(
+        { expiration_date: { $lt: today }, Status: { $ne: "Expired" } },
+        { $set: { Status: "Expired" } }
+      );
+
+      // 🔹 Custom sort order for status (Active → Inactive → Expired)
+      const statusOrder = { Active: 1, Inactive: 2, Expired: 3 };
+
+      // 🔹 Fetch paginated + sorted coupons
+      const coupons = await Coupon.find()
+        .sort({
+          Status: 1,         // Alphabetically, but we’ll adjust next line
+          createdAt: -1      // Within each status, newest first
+        })
+        .skip(skip)
+        .limit(limit)
+        .lean();
+
+      // 🔹 Custom reorder (force Active → Inactive → Expired)
+      const sortedCoupons = coupons.sort((a, b) => {
+        return statusOrder[a.Status] - statusOrder[b.Status];
       });
 
-      // Update expired coupons in DB
-      for (let coupon of coupons) {
-        if (coupon.expiration_date < today && coupon.Status !== "Expired") {
-          coupon.Status = "Expired";
-          await coupon.save();
-        }
-      }
+      // Calculate total pages
+      const totalPages = Math.ceil(totalCoupons / limit);
 
-      res.render('admin/couponpage', { coupons });
+      // Render page
+      res.render("admin/couponpage", {
+        coupons: sortedCoupons,
+        currentPage: page,
+        totalPages
+      });
+
     } catch (error) {
-      console.error('Error fetching coupons:', error);
-      res.status(500).render('errorpage', { error: 'Internal Server Error' });
+      console.error("Error fetching coupons:", error);
+      res.status(500).render("errorpage", { error: "Internal Server Error" });
     }
   },
+
   
 
   // -------------------------------------Coupon Added-------------------------------------------------------------

@@ -1,0 +1,131 @@
+body {
+    background-color: #0a0a0a;
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.address-section {
+    min-height: 75vh;
+}
+
+h2 {
+    color: #fa8232;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.address-card {
+    background: linear-gradient(145deg, #111, #1a1a1a);
+    border: 1px solid #2c2c2c;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.address-card:hover {
+    box-shadow: 0 0 15px rgba(250, 130, 50, 0.7);
+    transform: translateY(-5px);
+}
+
+.btn-warning {
+    background-color: #fa8232 !important;
+    color: #000;
+    border: none;
+}
+
+.btn-outline-warning {
+    border-color: #fa8232;
+    color: #fa8232;
+}
+
+.btn-outline-warning:hover {
+    background-color: #fa8232;
+    color: #000;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.form-control {
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #fa8232;
+}
+
+.form-control:focus {
+    border-color: #fa8232;
+    box-shadow: 0 0 0 0.2rem rgba(250, 130, 50, 0.25);
+}
+
+.modal-content {
+    background-color: #0d0d0d;
+    border: 1px solid #fa8232;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(250, 130, 50, 0.4);
+    color: #fff;
+}
+
+.modal-header {
+    background-color: #fa8232;
+    color: #000;
+    font-weight: 600;
+}
+
+.error-text {
+    font-size: 0.8rem;
+    color: #ff6b6b !important;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.is-valid {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.navbar-brand span {
+    font-size: 1.1rem;
+}
+
+.navbar .form-control {
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #fa8232;
+    height: 34px;
+    font-size: 0.9rem;
+}
+
+.navbar .btn-outline-warning {
+    border-color: #fa8232;
+    color: #fa8232;
+    font-size: 0.85rem;
+}
+
+.navbar .btn-outline-warning:hover {
+    background-color: #fa8232;
+    color: #000;
+}
+
+.offcanvas .list-group-item:hover {
+    background-color: rgba(250, 130, 50, 0.1);
+}
+
+footer {
+    font-size: 0.9rem;
+}
+
+footer .nav-link {
+    color: #aaa !important;
+}
+
+footer .nav-link:hover {
+    color: #fa8232 !important;
+}
+
+footer .text-warning {
+    color: #fa8232 !important;
+}

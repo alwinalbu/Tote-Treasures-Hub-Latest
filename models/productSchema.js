@@ -12,7 +12,7 @@ const ProductsSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return value > 0; // Ensuring Price is a positive number
+        return value > 0;
       },
       message: 'Price must be a positive number.'
     }

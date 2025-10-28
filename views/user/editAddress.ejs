@@ -1,194 +1,204 @@
-<%- include('../layouts/userhead') %>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Addresses | ToteTreasures Hub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/addressDark.css"> <!-- ✅ External CSS -->
+
+</head>
+
+<body>
     <%- include('../partials/usernava') %>
         <%- include('../partials/usercanvas') %>
 
+            <section class="address-section py-5">
+                <div class="container">
+
+                    <% if (messages.success) { %>
+                        <div class="alert alert-success text-center">
+                            <%= messages.success %>
+                        </div>
+                        <% } else if (messages.error) { %>
+                            <div class="alert alert-danger text-center">
+                                <%= messages.error %>
+                            </div>
+                            <% } %>
+
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h2>Your Addresses</h2>
+                                    <button class="btn btn-warning fw-semibold" data-bs-toggle="modal"
+                                        data-bs-target="#addAddressModal">
+                                        <i class="fas fa-plus-circle me-2"></i>Add Address
+                                    </button>
+                                </div>
+
+                                <% if (user.Address.length> 0) { %>
+                                    <div class="row gy-4">
+                                        <% user.Address.forEach(function(Address) { %>
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="card address-card text-white h-100">
+                                                    <div class="card-body p-4">
+                                                        <h5 class="fw-bold text-warning mb-2">
+                                                            <%= Address.Name %>
+                                                        </h5>
+                                                        <p class="mb-1"><i class="fas fa-home me-2 text-warning"></i>
+                                                            <%= Address.AddressLane %>
+                                                        </p>
+                                                        <p class="mb-1"><i class="fas fa-city me-2 text-warning"></i>
+                                                            <%= Address.City %>
+                                                        </p>
+                                                        <p class="mb-1"><i class="fas fa-map-pin me-2 text-warning"></i>
+                                                            <%= Address.Pincode %>
+                                                        </p>
+                                                        <p class="mb-1"><i class="fas fa-map me-2 text-warning"></i>
+                                                            <%= Address.State %>
+                                                        </p>
+                                                        <p class="mb-3"><i class="fas fa-phone me-2 text-warning"></i>
+                                                            <%= Address.Mobile %>
+                                                        </p>
+
+                                                        <div class="d-flex justify-content-between">
+                                                            <button class="btn btn-outline-warning btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editAddressModal<%= Address._id %>">
+                                                                <i class="fas fa-edit me-1"></i>Edit
+                                                            </button>
+                                                            <a href="/deleteAddress/<%= Address._id %>"
+                                                                class="btn btn-outline-danger btn-sm remove-button">
+                                                                <i class="fas fa-trash me-1"></i>Remove
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="text-center py-5">
+                                            <img src="/images/empty_address_dark.svg" alt="No Address"
+                                                style="width:150px;opacity:0.8;">
+                                            <h4 class="text-secondary mt-3">No Addresses Found</h4>
+                                        </div>
+                                        <% } %>
+                </div>
+            </section>
+
+            <!-- ADD ADDRESS MODAL -->
             <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addAddressModalLabel">Add Address</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title">Add New Address</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <form action="/addAddress" method="post">
-                                <div class="mb-3">
-                                    <label for="fullName" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" name="Name" id="fullName"
-                                        placeholder="Enter your full name" required>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-warning">Full Name</label>
+                                        <input type="text" class="form-control" name="Name" maxlength="20" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-warning">Mobile Number</label>
+                                        <input type="tel" class="form-control" name="Mobile" required
+                                            pattern="[0-9]{10}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label text-warning">Address</label>
+                                        <input type="text" class="form-control" name="AddressLane" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-warning">City</label>
+                                        <input type="text" class="form-control" name="City" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-warning">Pincode</label>
+                                        <input type="text" class="form-control" name="Pincode" required
+                                            pattern="[0-9]{6}">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label text-warning">State</label>
+                                        <input type="text" class="form-control" name="State" required>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" name="AddressLane" id="address"
-                                        placeholder="Enter your address" required>
+                                <div class="mt-4 text-end">
+                                    <button type="submit" class="btn btn-warning text-dark fw-semibold">Save
+                                        Address</button>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="city" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="city" name="City"
-                                        placeholder="Enter your city" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="pincode" class="form-label">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="Pincode"
-                                        placeholder="Enter your pincode" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="state" class="form-label">State</label>
-                                    <input type="text" class="form-control" id="state" name="State"
-                                        placeholder="Enter your state" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                    <input type="tel" class="form-control" id="mobileNumber" name="Mobile"
-                                        placeholder="Enter your mobile number" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-                                    aria-label="Close">Submit</button>
                             </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- edit address -->
+            <!-- EDIT ADDRESS MODALS -->
             <% user.Address.forEach(function(Address) { %>
-                <div class="modal fade" id="editAddressModal<%=Address._id%>" tabindex="-1"
-                    aria-labelledby="editAddressModalLabel<%=Address._id%>" aria-hidden="true">
-                    <div class="modal-dialog">
+                <div class="modal fade" id="editAddressModal<%= Address._id %>" tabindex="-1"
+                    aria-labelledby="editAddressModalLabel<%= Address._id %>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editAddressModalLabel<%=Address._id%>">Edit Address</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <h5 class="modal-title">Edit Address</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="/editAddress/<%=Address._id%>" method="post">
-
-                                    <div class="mb-3">
-                                        <label for="fullName" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" name="Name" value="<%=Address.Name%>"
-                                            id="fullName" placeholder="Enter your full name" required>
+                                <form action="/editAddress/<%= Address._id %>" method="post">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label text-warning">Full Name</label>
+                                            <input type="text" class="form-control" name="Name" maxlength="20"
+                                                value="<%= Address.Name %>" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label text-warning">Mobile Number</label>
+                                            <input type="tel" class="form-control" name="Mobile"
+                                                value="<%= Address.Mobile %>" required pattern="[0-9]{10}">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label text-warning">Address</label>
+                                            <input type="text" class="form-control" name="AddressLane"
+                                                value="<%= Address.AddressLane %>" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label text-warning">City</label>
+                                            <input type="text" class="form-control" name="City"
+                                                value="<%= Address.City %>" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label text-warning">Pincode</label>
+                                            <input type="text" class="form-control" name="Pincode"
+                                                value="<%= Address.Pincode %>" required pattern="[0-9]{6}">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="form-label text-warning">State</label>
+                                            <input type="text" class="form-control" name="State"
+                                                value="<%= Address.State %>" required>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" name="AddressLane"
-                                            value="<%=Address.AddressLane%>" id="address"
-                                            placeholder="Enter your address" required>
+                                    <div class="mt-4 text-end">
+                                        <button type="submit" class="btn btn-warning text-dark fw-semibold">Update
+                                            Address</button>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="city" class="form-label">City</label>
-                                        <input type="text" class="form-control" id="city" name="City"
-                                            value="<%=Address.City%>" placeholder="Enter your city" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="pincode" class="form-label">Pincode</label>
-                                        <input type="text" class="form-control" id="pincode" name="Pincode"
-                                            value="<%=Address.Pincode%>" placeholder="Enter your pincode" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="state" class="form-label">State</label>
-                                        <input type="text" class="form-control" id="state" name="State"
-                                            value="<%=Address.State%>" placeholder="Enter your state" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                        <input type="tel" class="form-control" id="mobileNumber" name="Mobile"
-                                            value="<%=Address.Mobile%>" placeholder="Enter your mobile number" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-                                        aria-label="Close">Submit</button>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <%})%>
-                <section style="min-height:75.5vh;">
-                    <div class="container">
-                        <% if (messages.success) { %>
-                            <div class="alert alert-success">
-                                <%= messages.success %>
-                            </div>
-                            <% }else if (messages.error){ %>
-                                <div class="alert alert-danger">
-                                    <%= messages.error %>
-                                </div>
-                                <%}%>
-                                    <%if(user.Address.length> 0){%>
-                                        <h1 class="text-center style">User Addresses</h1>
-                                        <% user.Address.forEach(function(Address) { %>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="card mb-4"
-                                                        style=" background: linear-gradient(to bottom right, rgb(110, 182, 204), rgb(207, 207, 107));">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">
-                                                                <%=Address.Name%>
-                                                            </h5>
-                                                            <p class="card-text">
-                                                                <%=Address.AddressLane%>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                <%=Address.City%>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                <%=Address.Pincode%>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                <%=Address.State%>
-                                                            </p>
-                                                            <p class="card-text">
-                                                                <%=Address.Mobile%>
-                                                            </p>
-                                                            <button class="btn btn-light" data-bs-toggle="modal"
-                                                                data-bs-target="#editAddressModal<%=Address._id%>">
-                                                                <i class="fas fa-plus-circle"></i> Edit Address
-                                                            </button>
-                                                            <a href='/deleteAddress/<%=Address._id%>'
-                                                            class="btn btn-light border text-danger icon-hover-danger remove-button">Remove</a>
+                <% }) %>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <%})%>
-                                                <%}else{%>
-                                                    <h1 class="text-center style">User Addresses</h1>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="card text-bg-dark">
-                                                                <div class="card-body icons text-center">
-                                                                    <h1>NO ADDRESS TO SHOW</h1>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+<%- include('../layouts/footer') %>
+<%- include('../layouts/userfooter') %>
 
-                                                    <%}%>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/addressValidation.js"></script>
+</body>
 
-
-                                                        <button class="btn btn-info" data-bs-toggle="modal"
-                                                            data-bs-target="#addAddressModal">
-                                                            <i class="fas fa-plus-circle"></i> Add Address
-                                                        </button>
-                        </div>
-
-</section>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-                        crossorigin="anonymous"></script>
-
-                    <script>
-                        var myOffcanvas = new bootstrap.Offcanvas(document.getElementById('staticBackdrop'));
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script src="/js/address.js"></script>
-                    
-                    <%- include('../layouts/footer') %>
-                    <%- include('../layouts/userfooter') %>
+</html>

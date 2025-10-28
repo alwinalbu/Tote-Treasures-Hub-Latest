@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 
 <head>
@@ -77,6 +77,290 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="/js/loginscript.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+
+</html> -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OTP Verification | ToteTreasures Hub</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #000000, #1a1a1a);
+      color: #fff;
+    }
+
+    .navbar {
+      background-color: #000 !important;
+      border-bottom: 1px solid #fa8232;
+      padding: 0.6rem 1rem;
+    }
+
+    .navbar-brand h3 {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #fff;
+      display: inline-block;
+      margin: 0;
+    }
+
+    .verification-section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      background: radial-gradient(circle at top, #111 5%, #000 85%);
+    }
+
+    .verification-card {
+      background-color: #111;
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(250, 130, 50, 0.2);
+      color: #fff;
+      width: 100%;
+      max-width: 420px;
+      transition: all 0.3s ease;
+    }
+
+    .verification-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(250, 130, 50, 0.3);
+    }
+
+    .card-title {
+      color: #fa8232;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .card-subtitle {
+      color: #ccc;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* OTP Input */
+    #number {
+      background-color: #1e1e1e;
+      border: 1px solid #fa8232;
+      color: #fff;
+      font-size: 1.3rem;
+      border-radius: 8px;
+      text-align: center;
+      padding: 10px;
+      caret-color: #fa8232;
+    }
+
+    #number::placeholder {
+      color: #b5b5b5;
+      opacity: 0.8;
+    }
+
+    #number:focus {
+      background-color: #262626;
+      border-color: #fa8232;
+      box-shadow: 0 0 8px rgba(250, 130, 50, 0.5);
+      outline: none;
+    }
+
+    /* Buttons */
+    .btn-verify {
+      background-color: #fa8232;
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .btn-verify:hover {
+      background-color: #ff9933;
+      transform: scale(1.02);
+    }
+
+    /* Timer */
+    #timer {
+      color: #fff;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    #timer.expired {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Resend OTP link */
+    #resendOtp {
+      display: none;
+      text-align: center;
+    }
+
+    #resendOtp a {
+      color: #fa8232;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #resendOtp a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+      .verification-card {
+        margin: 10px;
+        padding: 10px;
+      }
+
+      #number {
+        font-size: 1.1rem;
+      }
+
+      .btn-verify {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand d-flex align-items-center" href="/homepage">
+        <img src="/images/logo.png" alt="logo" style="max-height: 60px;" class="me-2">
+        <h3>ToteTreasures Hub</h3>
+      </a>
+    </div>
+  </nav>
+
+  <!-- OTP Section -->
+  <section class="verification-section">
+    <div class="card verification-card p-4 p-md-5">
+      <form class="formforgot" action="/otpVerification" method="post">
+        <% if (messages.success) { %>
+          <div class="alert alert-success text-center">
+            <%= messages.success %>
+          </div>
+          <% } else if (messages.error) { %>
+            <div class="alert alert-danger text-center">
+              <%= messages.error %>
+            </div>
+            <% } %>
+
+              <h4 class="card-title mb-2"><i class="fa-solid fa-envelope-circle-check me-2"></i>Verify Your Email</h4>
+              <p class="card-subtitle">Enter the OTP sent to your registered email address</p>
+
+              <div class="mb-3">
+                <input type="number" name="otp" id="number" class="form-control" placeholder="Enter your OTP" required>
+              </div>
+
+              <button id="otpVerification" type="submit" class="btn btn-verify mb-3">
+                Verify OTP
+              </button>
+
+              <div class="text-center mb-2">
+                <p class="text-secondary">OTP will expire in:
+                  <span id="timer">02:00</span>
+                </p>
+              </div>
+
+              <div id="resendOtp">
+                <p class="text-secondary">Didn’t receive the email?
+                  <a href="/passwordResendOtp">Resend OTP</a>
+                </p>
+              </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      let duration = 60; 
+      let countdown;
+
+      const timerDisplay = $("#timer");
+      const resendOtp = $("#resendOtp");
+      const otpInput = $("#number");
+      const otpButton = $("#otpVerification");
+
+      function updateTimer() {
+        const minutes = Math.floor(duration / 60);
+        const seconds = (duration % 60).toString().padStart(2, "0");
+        timerDisplay.text(`${minutes}:${seconds}`);
+
+        if (duration === 0) {
+          clearInterval(countdown);
+          timerDisplay.text("OTP expired").addClass("expired");
+          resendOtp.fadeIn();
+          otpButton.prop("disabled", true).css({
+            opacity: 0.6,
+            cursor: "not-allowed"
+          });
+        } else {
+          duration--;
+        }
+      }
+
+      updateTimer();
+      countdown = setInterval(updateTimer, 1000);
+
+      otpButton.click(function (e) {
+        e.preventDefault();
+        const otp = otpInput.val().trim();
+
+        if (!otp) {
+          alert("Please enter the OTP before verifying.");
+          return;
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "/otpVerification",
+          data: { otp },
+          success: function (response) {
+            if (response.success) {
+              clearInterval(countdown);
+              timerDisplay.text("✅ OTP Verified").css("color", "#32cd32");
+              setTimeout(() => {
+                window.location.href = "/createNewPassword";
+              }, 1000);
+            } else {
+              alert("Invalid OTP. Please try again.");
+            }
+          },
+          error: function () {
+            alert("An error occurred while validating OTP.");
+          },
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

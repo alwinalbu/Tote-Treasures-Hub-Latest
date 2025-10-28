@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <!-- NAVBAR -->
+
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <a class="navbar-brand" href="">
@@ -23,7 +23,7 @@
         <h3 class="text-white fw-bold m-0 d-inline align-middle">ToteTreasures Hub</h3>
       </a>
 
-      <!-- Search -->
+     
       <form class="d-flex" role="search" action="/search" method="GET">
         <input class="form-control me-2" type="search" name="searchNames" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -78,13 +78,12 @@
 
   <% let totalPrice=0; %>
 
-    <!-- CART SECTION -->
     <section class="bg-light" style="min-height:76vh;">
       <form id="cartSubmit">
         <div class="container">
           <div class="row">
 
-            <!-- CART ITEMS -->
+           
             <div class="col-lg-9">
               <div class="card border shadow-0 m-4">
                 <div class="m-4">
@@ -105,11 +104,11 @@
                           </div>
                         </div>
 
-                        <!-- Quantity & Price -->
+                   
                         <div class="col-lg-2 col-sm-6 col-6">
                           <div class="cart-quantity-price">
 
-                            <!-- Quantity Controls -->
+                     
                             <div class="input-group">
                               <button class="btn btn-dark decrease-quantity"
                                 data-product-id="<%= cartItem.ProductId._id %>" type="button">-</button>
@@ -123,7 +122,7 @@
                                 data-product-id="<%= cartItem.ProductId._id %>" type="button">+</button>
                             </div>
 
-                            <!-- Price Section -->
+                 
                             <div>
                               <% if (cartItem.ProductId.offer) { %>
                                 ₹ <span class="h6 product-amount" id="productAmount_<%= cartItem.ProductId._id %>"
@@ -143,7 +142,7 @@
                           </div>
                         </div>
 
-                        <!-- Remove -->
+           
                         <div class="col-lg col-sm-6 d-flex justify-content-end align-items-center">
                           <div>
                             <strong class="card-text text-danger out-of-stock-message"
@@ -172,9 +171,9 @@
               </div>
             </div>
 
-            <!-- SUMMARY -->
-            <div class="col-lg-3">
-              <div class="card border shadow-0 m-4">
+    
+            <div class="col-lg-3 mt-4">
+              <div class="card border shadow-0 mb-2 ">
                 <div class="card-body">
                   <% if (coupons.length> 0) { %>
                     <div class="form-group">
@@ -204,7 +203,7 @@
                 </div>
               </div>
 
-              <div class="card shadow-0 border">
+              <div class="card shadow-0 border mb-2">
                 <div class="card-body">
                   <div class="d-flex justify-content-between">
                     <p class="mb-2">Sub Total :</p>
@@ -252,7 +251,12 @@
       </form>
     </section>
 
-    <!-- Scripts -->
+<!-- ✅ Safe injection: avoids VS Code syntax errors -->
+<script>
+  window.serverAppliedCoupon = JSON.parse('<%- JSON.stringify(cart && cart.coupon ? cart.coupon : null) %>');
+  window.serverCartTotals = JSON.parse('<%- JSON.stringify({subTotal: typeof totalPrice !== "undefined" ? Number(totalPrice) : 0,discount: cart && cart.coupon && cart.coupon.discount_amount ? Number(cart.coupon.discount_amount) : 0}) %>');
+</script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -261,3 +265,4 @@
 </body>
 
 </html>
+

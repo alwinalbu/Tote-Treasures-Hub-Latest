@@ -1,4 +1,4 @@
-    <!-- Offcanvas menu -->
+<!-- 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasMenuLabel">User Panel</h5>
@@ -29,6 +29,43 @@
                 <a href="/Wallet" class="list-group-item custom-list-item">
                     <i class="fas fa-flag me-2"></i>
                     <span>Wallet</span>
+                </a>
+            </ul>
+        </div>
+    </div> -->
+
+    <!-- ================= Offcanvas Menu ================= -->
+    <div class="offcanvas offcanvas-start text-light" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel"
+        style="background-color: #0a0a0a;">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <h5 class="offcanvas-title fw-semibold text-warning" id="offcanvasMenuLabel">User Panel</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="list-group list-group-flush">
+                <a href="/profile"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-user me-2 text-warning"></i> Profile
+                </a>
+                <a href="/orderlist"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-bag-shopping me-2 text-warning"></i> Orders History
+                </a>
+                <a href="/cartpage"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-cart-shopping me-2 text-warning"></i> Cart
+                </a>
+                <a href="/editAddress"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-location-dot me-2 text-warning"></i> Address
+                </a>
+                <a href="/wishlist"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-heart me-2 text-warning"></i> Wishlist
+                </a>
+                <a href="/wallet"
+                    class="list-group-item list-group-item-action bg-transparent text-light border-0 py-3 px-4">
+                    <i class="fas fa-wallet me-2 text-warning"></i> Wallet
                 </a>
             </ul>
         </div>
